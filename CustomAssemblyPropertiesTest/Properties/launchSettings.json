@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CustomAssemblyPropertiesTest": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
