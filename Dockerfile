@@ -1,8 +1,3 @@
-ARG buildVersion
-ARG buildDate
-ARG gitCommit
-ARG gitBranch
-
 FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
 USER app
 WORKDIR /app
@@ -18,7 +13,12 @@ RUN dotnet build "./CustomAssemblyPropertiesTest.csproj" -c $BUILD_CONFIGURATION
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./CustomAssemblyPropertiesTest.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false /p:Version=$buildVersion /p:InformationalVersion=$buildDate+$gitCommit+$gitBranch
+ARG BUILD_VERSION="0.0.0.0"
+ARG BUILD_DATE
+ARG GIT_COMMIT
+ARG GIT_BRANCH
+
+RUN dotnet publish "./CustomAssemblyPropertiesTest.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false /p:Version=$BUILD_VERSION /p:InformationalVersion=$BUILD_DATE+$GIT_COMMIT+$GIT_BRANCH
 
 FROM base AS final
 WORKDIR /app
